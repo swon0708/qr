@@ -15,17 +15,29 @@ def calculator():
             second_rate = float(request.form["second_rate"])
 
             performance = float(request.form["performance"])
-            performance_rate = float(request.form["performance_rate"])
 
-            total_rate = first_rate + second_rate + performance_rate
+            total_rate = first_rate + second_rate
 
-            if total_rate != 100:
-                result = f"반영비율의 합이 {total_rate}%입니다. 100%가 되어야 합니다."
+            all=first*first_rate/100 + second*second_rate/100 + performance
+
+            if first < 0 or first > 100:
+                result = "1차 지필 점수는 0~100 사이여야 합니다."
+
+            elif second < 0 or second > 100:
+                result = "2차 지필 점수는 0~100 사이여야 합니다."
+
+            elif first_rate < 0 or second_rate < 0:
+                result = "반영비율은 0 이상이어야 합니다."
+
+            elif total_rate > 100:
+                result = "반영비율의 합이 100%를 초과했습니다."
+            elif all > 100:
+                result = "총합 성적이 100을 초과했습니다"
             else:
                 score = (
-                    first * first_rate / 100 +
-                    second * second_rate / 100 +
-                    performance * performance_rate / 100
+                        first * first_rate / 100 +
+                        second * second_rate / 100 +
+                        performance
                 )
 
                 result = f"학기말 성적은 {score:.2f}점 입니다."
@@ -123,11 +135,8 @@ def calculator():
     <label>2차 지필 반영비율(%)</label>
     <input type="number" name="second_rate">
 
-    <label>수행평가 점수</label>
-    <input type="number" name="performance">
-
-    <label>수행평가 반영비율(%)</label>
-    <input type="number" name="performance_rate">
+    <label>수행평가 환산점수</label>
+    <input type="number" name="performance" placeholder="예: 40">
 
     <button type="submit">계산하기</button>
 
