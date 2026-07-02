@@ -8,28 +8,54 @@ def calculator():
 
     if request.method == "POST":
         try:
-            mid = float(request.form["mid"])
-            final = float(request.form["final"])
-            assignment = float(request.form["assignment"])
+            first = float(request.form["first"])
+            first_rate = float(request.form["first_rate"])
 
-            score = mid * 0.4 + final * 0.4 + assignment * 0.2
-            result = f"최종 성적: {score:.2f}점"
+            second = float(request.form["second"])
+            second_rate = float(request.form["second_rate"])
+
+            performance = float(request.form["performance"])
+            performance_rate = float(request.form["performance_rate"])
+
+            total_rate = first_rate + second_rate + performance_rate
+
+            if total_rate != 100:
+                result = f"반영비율의 합이 {total_rate}%입니다. 100%가 되어야 합니다."
+            else:
+                score = (
+                    first * first_rate / 100 +
+                    second * second_rate / 100 +
+                    performance * performance_rate / 100
+                )
+
+                result = f"학기말 성적은 {score:.2f}점 입니다."
 
         except:
             result = "입력값을 확인하세요."
 
     return f"""
-<h2>학기말 성적 계산기</h2>
-<form method="post">
-    중간고사(40%): <input type="number" name="mid"><br><br>
-    기말고사(40%): <input type="number" name="final"><br><br>
-    과제(20%): <input type="number" name="assignment"><br><br>
+    <h1>📚 학기말 성적 계산기</h1>
 
-    <input type="submit" value="계산하기">
-</form>
+    <form method="post">
 
-<h3>{result}</h3>
-"""
+        <h3>1차 지필</h3>
+        점수 : <input type="number" name="first"><br><br>
+        반영비율(%) : <input type="number" name="first_rate"><br><br>
+
+        <h3>2차 지필</h3>
+        점수 : <input type="number" name="second"><br><br>
+        반영비율(%) : <input type="number" name="second_rate"><br><br>
+
+        <h3>수행평가</h3>
+        점수 : <input type="number" name="performance"><br><br>
+        반영비율(%) : <input type="number" name="performance_rate"><br><br>
+
+        <input type="submit" value="계산하기">
+
+    </form>
+
+    <h2>{result}</h2>
+    """
 
 if __name__ == "__main__":
     app.run(debug=True)
