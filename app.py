@@ -19,17 +19,17 @@ def calculator():
             result = "입력값을 확인하세요."
 
     return f"""
-    <h2>학기말 성적 계산기</h2>
-    <form method="post">
-        중간고사(40%): <input type="number" name="mid"><br><br>
-        기말고사(40%): <input type="number" name="final"><br><br>
-        과제(20%): <input type="number" name="assignment"><br><br>
+<h2>학기말 성적 계산기</h2>
+<form method="post">
+    중간고사(40%): <input type="number" name="mid"><br><br>
+    기말고사(40%): <input type="number" name="final"><br><br>
+    과제(20%): <input type="number" name="assignment"><br><br>
 
-        <input type="submit" value="계산하기">
-    </form>
+    <input type="submit" value="계산하기">
+</form>
 
-    <h3>{result}</h3>
-    """
+<h3>{result}</h3>
+"""
 
 if __name__ == "__main__":
     app.run(debug=True)
