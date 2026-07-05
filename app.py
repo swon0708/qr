@@ -18,28 +18,17 @@ def calculator():
 
             performance = float(request.form["performance"])
 
-            total_rate = first_rate + second_rate
+            score = (
+            first * first_rate / 100 +
+            second * second_rate / 100 +
+            performance
+            )
 
-            if first < 0 or first > 100:
-                result = "❌ 1차 지필 점수는 0~100 사이여야 합니다."
+if score > 100:
+    result = "❌ 계산 결과가 100점을 초과했습니다. 입력값을 다시 확인해주세요."
 
-            elif second < 0 or second > 100:
-                result = "❌ 2차 지필 점수는 0~100 사이여야 합니다."
-
-            elif first_rate < 0 or second_rate < 0:
-                result = "❌ 반영비율은 0 이상이어야 합니다."
-
-            elif total_rate > 100:
-                result = "❌ 1차와 2차 반영비율의 합이 100%를 초과했습니다."
-
-            else:
-                score = (
-                    first * first_rate / 100 +
-                    second * second_rate / 100 +
-                    performance
-                )
-
-                result = f"{score:.2f}"
+else:
+    result = f"{score:.2f}"
 
         except:
             result = "입력값을 확인하세요."
