@@ -18,18 +18,17 @@ def calculator():
 
             performance = float(request.form["performance"])
 
-            score = (
-            first * first_rate / 100 +second * second_rate / 100 +performance)
+            # 반영비율 + 수행 환산점수 검사
+            if first_rate + second_rate + performance > 100:
+                result = "❌ 1차 반영비율 + 2차 반영비율 + 수행평가 환산점수의 합이 100을 초과합니다."
 
-            if score > 100:
-                result = f"""
-            ❌ 환산점수의 합이 {score:.2f}점입니다.<br>
-            1차 지필, 2차 지필 반영비율 또는 수행평가 환산점수를 확인해주세요.
-            """
             else:
-                result = f"""
-            🎉 학기말 성적은<br>
-            <span style='font-size:42px;'>{score:.2f}점</span>"""
+                score = (
+                    first * first_rate / 100 +
+                    second * second_rate / 100 +
+                    performance)
+
+                result = f"🎉 학기말 성적은<br><span style='font-size:42px'>{score:.2f}점</span>"
         except:
             result = "❌ 입력값을 확인해주세요."
 
