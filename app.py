@@ -4,9 +4,11 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET", "POST"])
 def calculator():
+
     result = ""
 
     if request.method == "POST":
+
         try:
             first = float(request.form["first"])
             first_rate = float(request.form["first_rate"])
@@ -18,139 +20,181 @@ def calculator():
 
             total_rate = first_rate + second_rate
 
-            all=first*first_rate/100 + second*second_rate/100 + performance
-
             if first < 0 or first > 100:
-                result = "1차 지필 점수는 0~100 사이여야 합니다."
+                result = "❌ 1차 지필 점수는 0~100 사이여야 합니다."
 
             elif second < 0 or second > 100:
-                result = "2차 지필 점수는 0~100 사이여야 합니다."
+                result = "❌ 2차 지필 점수는 0~100 사이여야 합니다."
 
             elif first_rate < 0 or second_rate < 0:
-                result = "반영비율은 0 이상이어야 합니다."
+                result = "❌ 반영비율은 0 이상이어야 합니다."
 
             elif total_rate > 100:
-                result = "반영비율의 합이 100%를 초과했습니다."
-            elif all > 100:
-                result = "총합 성적이 100을 초과했습니다"
+                result = "❌ 1차와 2차 반영비율의 합이 100%를 초과했습니다."
+
             else:
                 score = (
-                        first * first_rate / 100 +
-                        second * second_rate / 100 +
-                        performance
+                    first * first_rate / 100 +
+                    second * second_rate / 100 +
+                    performance
                 )
 
-                result = f"학기말 성적은 {score:.2f}점 입니다."
+                result = f"{score:.2f}"
 
         except:
             result = "입력값을 확인하세요."
 
-    return f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    # 결과 화면
+    if request.method == "POST":
+        return f"""
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <style>
-    body {{
-        font-family: Arial, sans-serif;
-        background: #f4f6f9;
-        display: flex;
-        justify-content: center;
-        padding: 20px;
-    }}
+<style>
+body {{
+    font-family: Arial;
+    background:#f4f6f9;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}}
 
-    .container {{
-        background: white;
-        width: 100%;
-        max-width: 400px;
-        padding: 20px;
-        border-radius: 15px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.15);
-    }}
+.container {{
+    background:white;
+    width:90%;
+    max-width:400px;
+    padding:30px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 0 15px rgba(0,0,0,0.15);
+}}
 
-    h1 {{
-        text-align: center;
-        color: #2c3e50;
-    }}
+.score {{
+    font-size:40px;
+    color:#007bff;
+    font-weight:bold;
+    margin:25px 0;
+}}
 
-    label {{
-        font-weight: bold;
-    }}
+button {{
+    width:100%;
+    padding:15px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    background:#28a745;
+    color:white;
+    cursor:pointer;
+}}
+</style>
+</head>
 
-    input[type=number] {{
-        width: 100%;
-        padding: 12px;
-        margin: 8px 0 18px 0;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-        font-size: 16px;
-    }}
+<body>
 
-    button {{
-        width: 100%;
-        padding: 15px;
-        background: #007bff;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        font-size: 18px;
-        cursor: pointer;
-    }}
+<div class="container">
 
-    button:hover {{
-        background: #0056b3;
-    }}
+<h2>📚 학기말 성적</h2>
 
-    .result {{
-        margin-top:20px;
-        padding:15px;
-        background:#e8f5e9;
-        border-radius:10px;
-        text-align:center;
-        font-size:20px;
-        font-weight:bold;
-    }}
-    </style>
-    </head>
+<div class="score">
+{result}
+</div>
 
-    <body>
+<form method="GET">
+<button>다시 계산하기</button>
+</form>
 
-    <div class="container">
+</div>
 
-    <h1>📚 학기말 성적 계산기</h1>
+</body>
+</html>
+"""
 
-    <form method="post">
+    # 입력 화면
+    return """
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <label>1차 지필 점수</label>
-    <input type="number" name="first">
+<style>
 
-    <label>1차 지필 반영비율(%)</label>
-    <input type="number" name="first_rate">
+body{
+font-family:Arial;
+background:#f4f6f9;
+display:flex;
+justify-content:center;
+padding:20px;
+}
 
-    <label>2차 지필 점수</label>
-    <input type="number" name="second">
+.container{
+background:white;
+width:100%;
+max-width:400px;
+padding:20px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(0,0,0,0.15);
+}
 
-    <label>2차 지필 반영비율(%)</label>
-    <input type="number" name="second_rate">
+input{
+width:100%;
+padding:12px;
+margin-top:8px;
+margin-bottom:18px;
+font-size:16px;
+border-radius:8px;
+border:1px solid #ccc;
+box-sizing:border-box;
+}
 
-    <label>수행평가 환산점수</label>
-    <input type="number" name="performance" placeholder="예: 40">
+button{
+width:100%;
+padding:15px;
+font-size:18px;
+background:#007bff;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
 
-    <button type="submit">계산하기</button>
+</style>
+</head>
 
-    </form>
+<body>
 
-    <div class="result">
-    {result}
-    </div>
+<div class="container">
 
-    </div>
+<h2 align="center">📚 학기말 성적 계산기</h2>
 
-    </body>
-    </html>
-    """
+<form method="POST">
+
+1차 지필 점수
+<input type="number" step="0.01" name="first" required>
+
+1차 지필 반영비율(%)
+<input type="number" step="0.01" name="first_rate" required>
+
+2차 지필 점수
+<input type="number" step="0.01" name="second" required>
+
+2차 지필 반영비율(%)
+<input type="number" step="0.01" name="second_rate" required>
+
+수행평가 환산점수
+<input type="number" step="0.01" name="performance" required>
+
+<button type="submit">계산하기</button>
+
+</form>
+
+</div>
+
+</body>
+</html>
+"""
 
 if __name__ == "__main__":
     app.run(debug=True)
