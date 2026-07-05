@@ -19,22 +19,19 @@ def calculator():
             performance = float(request.form["performance"])
 
             score = (
-            first * first_rate / 100 +
-            second * second_rate / 100 +
-            performance
+                first * first_rate / 100 +
+                second * second_rate / 100 +
+                performance
             )
 
-if score > 100:
-    result = "❌ 계산 결과가 100점을 초과했습니다. 입력값을 다시 확인해주세요."
-
-else:
-    result = f"{score:.2f}"
+            if score > 100:
+                result = f"❌ 계산 결과가 {score:.2f}점입니다.<br>100점을 초과하므로 입력값을 다시 확인해주세요."
+            else:
+                result = f"🎉 학기말 성적은<br><span style='font-size:42px;'>{score:.2f}점</span>"
 
         except:
-            result = "입력값을 확인하세요."
+            result = "❌ 입력값을 확인해주세요."
 
-    # 결과 화면
-    if request.method == "POST":
         return f"""
 <!DOCTYPE html>
 <html>
@@ -49,6 +46,7 @@ body {{
     justify-content:center;
     align-items:center;
     height:100vh;
+    margin:0;
 }}
 
 .container {{
@@ -59,13 +57,6 @@ body {{
     border-radius:15px;
     text-align:center;
     box-shadow:0 0 15px rgba(0,0,0,0.15);
-}}
-
-.score {{
-    font-size:40px;
-    color:#007bff;
-    font-weight:bold;
-    margin:25px 0;
 }}
 
 button {{
@@ -79,15 +70,16 @@ button {{
     cursor:pointer;
 }}
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h2>📚 학기말 성적</h2>
+<h2>📚 학기말 성적 계산기</h2>
 
-<div class="score">
+<div style="font-size:22px;margin:25px 0;">
 {result}
 </div>
 
@@ -101,11 +93,12 @@ button {{
 </html>
 """
 
-    # 입력 화면
     return """
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
@@ -149,14 +142,19 @@ border-radius:10px;
 cursor:pointer;
 }
 
+h2{
+text-align:center;
+}
+
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h2 align="center">📚 학기말 성적 계산기</h2>
+<h2>📚 학기말 성적 계산기</h2>
 
 <form method="POST">
 
@@ -182,6 +180,7 @@ cursor:pointer;
 </div>
 
 </body>
+
 </html>
 """
 
